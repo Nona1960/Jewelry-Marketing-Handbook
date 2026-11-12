@@ -1,0 +1,63 @@
+const V = 'mjr-202611122137';
+const PRE = [
+"/",
+"/authors/",
+"/authors/dronova.html",
+"/authors/gribnyakov.html",
+"/books.html",
+"/chapters/01-leader.html",
+"/chapters/02-personnel.html",
+"/chapters/03-partnership.html",
+"/chapters/04-competition.html",
+"/chapters/05-production.html",
+"/chapters/06-image.html",
+"/chapters/07-retail.html",
+"/chapters/08-clients.html",
+"/chapters/09-advertising.html",
+"/chapters/10-conclusion.html",
+"/contents.html",
+"/en/",
+"/en/authors/",
+"/en/authors/dronova.html",
+"/en/authors/gribnyakov.html",
+"/en/books.html",
+"/en/contents.html",
+"/en/holding.html",
+"/en/media.html",
+"/en/science.html",
+"/from-authors.html",
+"/holding.html",
+"/media.html",
+"/science.html",
+"/search.html",
+"/stories/",
+"/stories/1990s.html",
+"/stories/online.html",
+"/stories/simachev-lebedev.html",
+"/stories/trust.html",
+"/assets/css/site.css",
+"/assets/fonts/cormorant-garamond-cyrillic-500-italic.woff2",
+"/assets/fonts/cormorant-garamond-cyrillic-500-normal.woff2",
+"/assets/fonts/cormorant-garamond-cyrillic-600-normal.woff2",
+"/assets/fonts/cormorant-garamond-latin-500-italic.woff2",
+"/assets/fonts/cormorant-garamond-latin-500-normal.woff2",
+"/assets/fonts/cormorant-garamond-latin-600-normal.woff2",
+"/assets/fonts/manrope-cyrillic-400-normal.woff2",
+"/assets/fonts/manrope-cyrillic-600-normal.woff2",
+"/assets/fonts/manrope-latin-400-normal.woff2",
+"/assets/fonts/manrope-latin-600-normal.woff2",
+"/assets/js/app.js",
+"/search-index.json",
+"/manifest.webmanifest"
+];
+self.addEventListener('install', e => e.waitUntil(caches.open(V).then(c => c.addAll(PRE)).then(() => self.skipWaiting())));
+self.addEventListener('activate', e => e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())));
+self.addEventListener('fetch', e => {
+  const r = e.request; if (r.method !== 'GET' || new URL(r.url).origin !== location.origin) return;
+  if (r.mode === 'navigate') {
+    e.respondWith(fetch(r).then(res => { const cp = res.clone(); caches.open(V).then(c => c.put(r, cp)); return res; })
+      .catch(() => caches.match(r).then(m => m || caches.match('/'))));
+  } else {
+    e.respondWith(caches.match(r).then(m => m || fetch(r).then(res => { const cp = res.clone(); caches.open(V).then(c => c.put(r, cp)); return res; })));
+  }
+});
