@@ -1,4 +1,4 @@
-const V = 'mjr-202611122155';
+const V = 'mjr-202611122333';
 const PRE = [
 "/",
 "/authors/",
@@ -36,6 +36,7 @@ const PRE = [
 "/stories/online.html",
 "/stories/simachev-lebedev.html",
 "/stories/trust.html",
+"/yandex_691c492d388dbd0f.html",
 "/assets/css/site.css",
 "/assets/fonts/cormorant-garamond-cyrillic-500-italic.woff2",
 "/assets/fonts/cormorant-garamond-cyrillic-500-normal.woff2",
