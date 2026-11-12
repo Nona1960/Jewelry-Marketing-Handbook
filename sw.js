@@ -1,4 +1,4 @@
-const V = 'mjr-202611122143';
+const V = 'mjr-202611122155';
 const PRE = [
 "/",
 "/authors/",
@@ -26,6 +26,7 @@ const PRE = [
 "/en/media.html",
 "/en/science.html",
 "/from-authors.html",
+"/google29c41f4ef374f171.html",
 "/holding.html",
 "/media.html",
 "/science.html",
