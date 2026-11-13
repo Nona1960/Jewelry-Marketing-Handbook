@@ -491,3 +491,9 @@ input.q{border-radius:14px!important}
 @media (max-width:400px){.brand b{font-size:14px}.top .sl-logo img{height:16px}.left{gap:10px}}
 .top .wrap{max-width:1380px}
 .prose .dlg.q{font-weight:500}
+.vid{margin:24px 0 30px}
+.vid video{width:100%;aspect-ratio:16/9;border-radius:20px;background:#0e0e11;box-shadow:var(--sh2);display:block}
+.vid figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+.vband{padding-bottom:40px}
+.vband .vid{max-width:1000px}
+@media (max-width:760px){.vid video{border-radius:14px}}
