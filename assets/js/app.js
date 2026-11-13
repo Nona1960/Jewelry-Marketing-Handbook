@@ -42,3 +42,55 @@ let deferred;
 const ib = document.querySelector('.install');
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; if (ib) ib.hidden = false; });
 ib?.addEventListener('click', async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; ib.hidden = true; });
+
+// прогресс чтения и время чтения
+const prose = document.querySelector('.prose');
+if (prose && document.body.classList.contains('reading')) {
+  const bar = document.createElement('div'); bar.className = 'rbar'; document.body.appendChild(bar);
+  const upd = () => { const r = prose.getBoundingClientRect(), h = r.height - innerHeight; bar.style.width = Math.min(100, Math.max(0, -r.top / (h > 0 ? h : 1) * 100)) + '%'; };
+  addEventListener('scroll', upd, { passive: true }); upd();
+  const words = prose.innerText.split(/\s+/).length, min = Math.max(1, Math.round(words / 180));
+  const k = document.querySelector('.art-h .kicker');
+  if (k) { const s = document.createElement('span'); s.className = 'rtime'; s.textContent = document.documentElement.lang === 'ru' ? ` · ${min} мин чтения` : ` · ${min} min read`; k.appendChild(s); }
+}
+
+// тесты к главам
+document.querySelectorAll('.quiz').forEach(qz => {
+  let done = 0, ok = 0; const n = +qz.dataset.n, sc = qz.querySelector('.qscore');
+  qz.querySelectorAll('.qz').forEach(item => {
+    item.querySelectorAll('.qo').forEach(btn => btn.addEventListener('click', () => {
+      if (item.classList.contains('done')) return;
+      item.classList.add('done'); done++;
+      const right = btn.dataset.ok === '1'; if (right) ok++;
+      btn.classList.add(right ? 'ok' : 'bad');
+      item.querySelectorAll('.qo').forEach(b => { if (b.dataset.ok === '1') b.classList.add('ok'); b.disabled = true; });
+      item.querySelector('.qx').hidden = false;
+      if (done === n) { sc.hidden = false; sc.querySelector('b').textContent = ok; }
+    }));
+  });
+});
+
+// глоссарий: фильтр
+const glq = document.getElementById('glq');
+if (glq) glq.addEventListener('input', () => {
+  const v = glq.value.trim().toLowerCase();
+  document.querySelectorAll('.glossary .gl').forEach(g => { g.hidden = v && !g.textContent.toLowerCase().includes(v); });
+});
+
+// практикум: калькулятор
+const pr = document.querySelector('.pr');
+if (pr) {
+  const V = JSON.parse(pr.dataset.v), loc = pr.dataset.loc, g = id => +document.getElementById(id).value || 0;
+  const fmt = x => Math.round(x).toLocaleString(loc) + ' ₽';
+  const calc = () => {
+    const unit = g('aov') * g('margin') / 100, buys = g('freq') * g('years');
+    const own = unit * buys - g('cac');
+    const mpUnit = g('aov') * (g('margin') - g('comm')) / 100;
+    const mp = mpUnit * (Math.min(1, buys) + Math.max(0, buys - 1) * g('mprep') / 100);
+    document.getElementById('o1').textContent = fmt(own);
+    document.getElementById('o2').textContent = fmt(mp);
+    const d = own - mp, o3 = document.getElementById('o3');
+    o3.textContent = Math.abs(d) < Math.max(1, Math.abs(own) * 0.05) ? V.eq : (d > 0 ? V.own : V.mp) + fmt(Math.abs(d));
+  };
+  pr.addEventListener('input', calc); calc();
+}
