@@ -1,4 +1,4 @@
-const V = 'mjr-202611132037';
+const V = 'mjr-202611132046';
 const PRE = [
 "/",
 "/authors/",
@@ -69,8 +69,12 @@ const PRE = [
 "/assets/fonts/cormorant-garamond-latin-600-normal.woff2",
 "/assets/fonts/manrope-cyrillic-400-normal.woff2",
 "/assets/fonts/manrope-cyrillic-600-normal.woff2",
+"/assets/fonts/manrope-cyrillic-700-normal.woff2",
+"/assets/fonts/manrope-cyrillic-800-normal.woff2",
 "/assets/fonts/manrope-latin-400-normal.woff2",
 "/assets/fonts/manrope-latin-600-normal.woff2",
+"/assets/fonts/manrope-latin-700-normal.woff2",
+"/assets/fonts/manrope-latin-800-normal.woff2",
 "/assets/js/app.js",
 "/search-index.json",
 "/manifest.webmanifest"

@@ -1,6 +1,10 @@
 // меню на телефоне
 const b = document.querySelector('.burger'), n = document.querySelector('.nav');
 if (b) b.addEventListener('click', () => { const o = n.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
+const tbm = document.querySelector('.tb-menu');
+if (tbm) tbm.addEventListener('click', () => { n.classList.toggle('open'); scrollTo({ top: 0, behavior: 'smooth' }); });
+const tt = document.querySelector('.toc-t');
+if (tt) { tt.addEventListener('click', () => { const t = tt.parentElement, o = t.classList.toggle('open'); tt.setAttribute('aria-expanded', o); }); document.querySelectorAll('.toc a').forEach(a => a.addEventListener('click', () => tt.parentElement.classList.remove('open'))); }
 
 // подсветка текущего раздела в оглавлении главы
 const links = [...document.querySelectorAll('.toc a')];
@@ -93,4 +97,31 @@ if (pr) {
     o3.textContent = Math.abs(d) < Math.max(1, Math.abs(own) * 0.05) ? V.eq : (d > 0 ? V.own : V.mp) + fmt(Math.abs(d));
   };
   pr.addEventListener('input', calc); calc();
+}
+
+// прогресс по главам (localStorage)
+const LS = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+const ru = document.documentElement.lang === 'ru';
+const m = location.pathname.match(/\/chapters\/([^/.]+)\.html$/);
+if (m && prose) {
+  const slug = m[1], key = 'mjr-progress', all = LS.get(key) || {};
+  const title = document.querySelector('.art-h h1')?.textContent || '';
+  const save = () => {
+    const r = prose.getBoundingClientRect(), h = r.height - innerHeight;
+    const pct = Math.round(Math.min(100, Math.max(0, -r.top / (h > 0 ? h : 1) * 100)));
+    const prev = all[slug]?.p || 0;
+    all[slug] = { p: Math.max(prev, pct), t: title, u: location.pathname, at: Date.now() };
+    LS.set(key, all); LS.set('mjr-last', all[slug]);
+  };
+  let tm; addEventListener('scroll', () => { clearTimeout(tm); tm = setTimeout(save, 300); }, { passive: true }); save();
+}
+const prog = LS.get('mjr-progress') || {};
+document.querySelectorAll('.chlist a[data-slug]').forEach(a => {
+  const d = prog[a.dataset.slug], i = a.querySelector('.pg'); if (!d || !i) return;
+  if (d.p >= 90) { i.textContent = ru ? '✓ прочитано' : '✓ read'; i.classList.add('done'); } else if (d.p > 3) i.textContent = d.p + '%';
+});
+const cont = document.getElementById('cont'), last = LS.get('mjr-last');
+if (cont && last && last.p > 3 && last.p < 95 && (ru ? !last.u.startsWith('/en/') : last.u.startsWith('/en/'))) {
+  cont.hidden = false;
+  cont.outerHTML = `<a class="cont" href="${last.u}"><span class="ring" style="background:conic-gradient(#e1322a ${last.p*3.6}deg,#eee 0)"><span style="background:#fff;width:34px;height:34px;border-radius:50%;display:grid;place-items:center">${last.p}%</span></span><span><small>${ru ? 'Продолжить чтение' : 'Continue reading'}</small><b>${last.t}</b></span></a>`;
 }
