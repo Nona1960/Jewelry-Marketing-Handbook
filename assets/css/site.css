@@ -497,3 +497,9 @@ input.q{border-radius:14px!important}
 .vband{padding-bottom:40px}
 .vband .vid{max-width:1000px}
 @media (max-width:760px){.vid video{border-radius:14px}}
+.anthem{display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:20px;margin:24px 0 30px}
+.anthem .vid{margin:0}
+.vid.vert video{aspect-ratio:9/16;max-height:520px;width:100%;object-fit:cover;border-radius:14px}
+.anthem h3{font-size:22px;margin:0 0 10px}
+.anthem p{margin:0 0 10px;font-size:16px;line-height:1.6}
+@media (max-width:640px){.anthem{grid-template-columns:1fr}.anthem .vid{max-width:300px;margin:0 auto}}
