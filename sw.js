@@ -1,4 +1,4 @@
-const V = 'mjr-202611132021';
+const V = 'mjr-202611132022';
 const PRE = [
 "/",
 "/authors/",
