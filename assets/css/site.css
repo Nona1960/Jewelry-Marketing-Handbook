@@ -526,3 +526,7 @@ input.q{border-radius:14px!important}
 .course-more{margin-top:40px}
 @media (max-width:860px){.lesson-grid{grid-template-columns:1fr}.lesson-grid .vid{position:static;max-width:320px;margin:0 auto}.course-t{grid-template-columns:1fr}.course-t img{max-width:220px}}
 @media (max-width:560px){.words{grid-template-columns:1fr}}
+.lessons{display:flex;flex-direction:column;gap:56px}
+.lessons .lesson-grid{padding-top:36px;border-top:1px solid var(--line)}
+.lessons .lesson-grid:first-child{border-top:0;padding-top:0}
+.lessons-nav{margin-top:20px}
